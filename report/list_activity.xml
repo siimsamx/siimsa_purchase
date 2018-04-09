@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <report id="report_list_activities"
+                string="Requisición de compra"
+                model="siimsa_purchase.requisicion"
+                report_type="qweb-pdf"
+                file="siimsa_purchase.list_activity"
+                name="siimsa_purchase.list_activity"
+                menu="True"/>
+
+    </data>
+</openerp>

@@ -1,0 +1,178 @@
+<odoo>
+  <data>
+	<!-- explicit list view definition -->
+	<record model="ir.ui.view" id="siimsa_purchase.list">
+	  <field name="name">siimsa_purchase list</field>
+	  <field name="model">siimsa_purchase.requisicion</field>
+	  <field name="arch" type="xml">
+		<tree>
+		  <field name="name"/>
+		  <field name="tpo_com"/>
+		  <field name="pro_des"/>
+		  <field name="fec_sol"/>
+		  <field name="emp_ids"/>
+		</tree>
+	  </field>
+	</record>
+	<!-- explicit list view definition -->
+	<record model="ir.ui.view" id="siimsa_purchase.list_lista">
+	  <field name="name">siimsa_purchase list</field>
+	  <field name="model">siimsa_purchase.lista</field>
+	  <field name="arch" type="xml">
+		<tree>
+		  <field name="can_mat"/>
+		  <field name="uni_med"/>
+		  <field name="name"/>
+		  <field name="des_mat"/>
+		  <field name="pos_mat"/>
+		</tree>
+	  </field>
+	</record>
+	<!-- explicit form view definition -->
+	<record model="ir.ui.view" id="siimsa_purchase.form">
+	  <field name="name">siimsa_purchase form</field>
+	  <field name="model">siimsa_purchase.requisicion</field>
+	  <field name="arch" type="xml">
+		<form>
+		  <header>
+		    <button name="action_draft" 
+					type="object" 
+					string="Regresar a Nuevo" 
+					states="confirmed,done"/>
+		    <button name="action_confirmed" 
+					type="object" 
+					string="Confirmar" 
+					states="draft" 
+					class="oe_highlight"/>
+		    <button name="action_done" 
+					type="object" 
+					string="Marcar como Hecho" 
+					states="confirmed" 
+					class="oe_highlight"/>
+		    <field  name="state" widget="statusbar"/>
+		  </header>
+		 <sheet>
+			<div>
+			  <label for="name" class="oe_edit_only"/>
+			  <h1><field name="name" style="width:42%%" placeholder="000"/></h1>
+		    </div>
+			<group name="group_top" colspan="2" col="2">
+			  <group>
+				<field name="tpo_com"/>
+				<field name="fec_sol"/>
+			  </group>
+			  <group>
+				<field name="pro_des"/>
+				<field name="emp_ids"/>
+			  </group>
+			</group>
+			<notebook>
+			  <page string="LdM">
+				<field name="listado"/>
+			  </page>
+			  <page string="Notas">
+				<group>
+				  <field name="des_act"/>
+				</group>
+			  </page>
+			</notebook>
+		 </sheet>
+		 <div class="oe_chatter">
+			<field name="message_follower_ids" widget="mail_followers"/>
+			<field name="message_ids" widget="mail_thread"/>
+		 </div>
+		</form>
+	  </field>
+	</record>
+	<!-- explicit list view definition -->
+	<record model="ir.ui.view" id="siimsa_purchase.form_lista">
+	  <field name="name">siimsa_purchase form</field>
+	  <field name="model">siimsa_purchase.lista</field>
+	  <field name="arch" type="xml">
+		<form>
+		  <group>
+			<field name="can_mat"/>
+			<field name="uni_med"/>
+			<field name="name"/>
+			<field name="des_mat"/>
+			<field name="pos_mat"/>
+		  </group>
+		</form>
+	  </field>
+	</record>
+	<!-- actions opening views on models -->
+	<record model="ir.ui.view" id="siimsa_purchase.calendar">
+	  <field name="name"> siimsa_purchase calendar</field>
+	  <field name="model">siimsa_purchase.requisicion</field>
+	  <field name="arch" type="xml">
+		<calendar date_start="fec_sol" 
+				  date_stop="fec_sol" 
+				  color="emp_ids">
+		  <field name="emp_ids"></field>
+		</calendar>
+	  </field>
+	</record>
+	<!-- actions opening views on models -->
+	<record model="ir.ui.view" id="siimsa_purchase.kanban">
+	  <field name="name">siimsa_purchase kanban</field>
+	  <field name="model">siimsa_purchase.requisicion</field>
+	  <field name="arch" type="xml">
+		<kanban default_group_by="state">
+		  <field name="col_cal"/>
+		  <templates>
+		    <t t-name="kanban-box">
+			  <div t-attf-class="oe_kanban_global_click_edit oe_semantic_html_override
+								 oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+				<div class="oe_dropdown_toggle">
+				  <i lass="fa fa-bars fa-lg"/>
+				  <ul class="oe_dropdown_menu">
+				    <li>
+					 <a type="delete">Eliminar</a>
+					</li>
+					<li>
+					 <ul class="oe_kanban_colorpicker" data-field="color"/>
+					</li>
+				  </ul>
+				</div>
+				<div class="oe_clear"/>
+			    <div class="o_kanban_image">
+				  <img t-att-src="kanban_image('res.partner','image_medium', record.id.value)" class="oe_kanban_image"/>
+				</div>
+				<div t-attf-class="oe_kanban_content">
+				  <strong>
+				    Requisición de compra:
+					<field name="name"/>
+				  </strong>
+				  <ul>
+					<li t-if="record.fec_sol.raw_value">
+						Fecha de solicitud:
+						<field name="fec_sol"/>
+					</li>
+					<li t-if="record.fec_sol.raw_value">
+						Proyecto/Destino:
+						<field name="pro_des"/>
+					</li>
+				  </ul>
+				</div>
+			  </div>
+			</t>
+		  </templates>
+		</kanban>
+	  </field>
+	</record>
+	<!-- actions opening views on models -->
+	<record model="ir.actions.act_window" id="siimsa_purchase.action_window">
+	  <field name="name">Requisición de compra</field>
+	  <field name="res_model">siimsa_purchase.requisicion</field>
+	  <field name="view_mode">kanban,calendar,tree,form</field>
+	</record>
+	<!-- Top menu item -->
+	<menuitem name="Requisición" id="siimsa_purchase.menu_root"/>
+	<!-- menu categories -->
+	<menuitem name="Adquisiciones" id="siimsa_purchase.menu_1" parent="siimsa_purchase.menu_root"/>
+	<!-- actions -->
+	<menuitem name="Solicitudes" id="siimsa_purchase.menu_1_list" parent="siimsa_purchase.menu_1"
+			  action="siimsa_purchase.action_window"/>
+
+  </data>
+</odoo>

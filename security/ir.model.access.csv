@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_siimsa_purchase_siimsa_purchase,siimsa_purchase.siimsa_purchase,model_siimsa_purchase_siimsa_purchase,,1,0,0,0
